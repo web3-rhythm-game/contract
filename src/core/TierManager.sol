@@ -24,7 +24,7 @@ contract TierManager {
 		    _;
 		}
 
-    function setTokenRequired(Tier tier, uint128 amount) external onlyGameCoreOwner() {
+    function setTokenRequired(Tier tier, uint128 amount) external onlyGameCoreOwner {
         tierInfo[tier].tokenRequired = amount;
         emit TokenRequiredSet(tier, amount);
     }

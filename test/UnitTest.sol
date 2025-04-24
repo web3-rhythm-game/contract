@@ -6,18 +6,17 @@ import "../src/contents/Song.sol";
 
 contract UnitTest is BaseTest {
     function testUserRegistration() public {
-        vm.prank(user);
-        userManager.registerUser("testUser");
+        vm.prank(owner);
+        userManager.registerUser(user, "testUser");
         UserManager.User memory u = userManager.getUser(user);
 
         assertEq(u.name, "testUser");
     }
 
     function testRecordGamePlay() public {
-        vm.prank(user);
-        userManager.registerUser("testUser");
+        vm.prank(owner);
+        userManager.registerUser(user, "testUser");
 
-        vm.prank(user);
         uint64 gameId = gamePlayManager.recordGamePlay(user, 1, 1, 1, 1, 1, 1);
         address playerAddr = gamePlayManager.getGamePlay(gameId).player;
         assertEq(user, playerAddr);
@@ -30,17 +29,16 @@ contract UnitTest is BaseTest {
 
     function testMintAlbumToUser() public {
         album.mintAlbum(user, 1, 3);
-        album.mintAlbum(user, 2, 4);
+        album.mintAlbum(user, 2, 5);
         assertEq(album.balanceOf(user, 1), 3);
     }
 
     function testFullFlow() public {
         // 등록
-        vm.prank(user);
-        userManager.registerUser("testUser");
+        vm.prank(owner);
+        userManager.registerUser(user, "testUser");
 
         // 플레이 기록
-        vm.prank(user);
         uint64 gameId = gamePlayManager.recordGamePlay(user, 1, 1, 1, 1, 1, 1);
 
         // 보상 지급

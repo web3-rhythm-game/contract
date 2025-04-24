@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../interfaces/IGameCore.sol"; 
+import "../interfaces/IGameCore.sol";
+import "forge-std/console.sol";
 
 contract UserManager {
     struct User {
@@ -16,32 +17,48 @@ contract UserManager {
     mapping(address => User) public users;
     address public gameCore;
 
-    event UserRegistered(address indexed userAddress, string name, string email, string avatar);
+    event UserRegistered(
+        address indexed userAddress,
+        string name,
+        string email,
+        string avatar
+    );
 
     constructor(address _gameCore) {
         gameCore = _gameCore;
     }
 
     modifier onlyGameCoreOwner() {
-		    require(IGameCore(gameCore).owner() == msg.sender, "Unauthorized: not GameCore owner");
-		    _;
-		}
+        address owner = IGameCore(gameCore).owner();
+        console.log("GameCore Owner: %s", owner);
+        console.log("msg.sender: %s", msg.sender);
 
+        require(owner == msg.sender, "Unauthorized: not GameCore owner");
+        _;
+    }
 
-    function registerUser(string calldata name) external onlyGameCoreOwner() {
-        require(users[msg.sender].wallet == address(0), "UserAlreadyRegistered");
-        users[msg.sender] = User({
+    function registerUser(address userWalletAddr, string calldata name) external onlyGameCoreOwner {
+        require(
+            users[userWalletAddr].wallet == address(0),
+            "UserAlreadyRegistered"
+        );
+        users[userWalletAddr] = User({
             name: name,
             bio: "",
-            wallet: msg.sender,
+            wallet: userWalletAddr,
             email: "",
             avatar: "",
             joinedAt: uint40(block.timestamp)
         });
-        emit UserRegistered(msg.sender, "Unknown", "", "");
+        emit UserRegistered(userWalletAddr, name, "", "");
     }
 
-    function updateUser(string calldata name, string calldata bio, string calldata email, string calldata avatar) external onlyGameCoreOwner() {
+    function updateUser(
+        string calldata name,
+        string calldata bio,
+        string calldata email,
+        string calldata avatar
+    ) external onlyGameCoreOwner {
         require(users[msg.sender].wallet != address(0), "UserNotFound");
         users[msg.sender].name = name;
         users[msg.sender].bio = bio;

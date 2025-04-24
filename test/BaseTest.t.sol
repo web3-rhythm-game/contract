@@ -35,8 +35,7 @@ contract BaseTest is Test {
         gamePlayManager = new GamePlayManager(address(gameCore));
         beat = new Beat(address(gameCore));
         album = new Album(address(gameCore));
-        Song dummySong = new Song();
-        songFactory = new SongFactory(address(gameCore), address(dummySong));
+        songFactory = new SongFactory(address(gameCore));
 
         // GameCore에 모듈 등록
         gameCore.setManager("UserManager", address(userManager));
@@ -45,7 +44,6 @@ contract BaseTest is Test {
         gameCore.setManager("Beat", address(beat));
         gameCore.setManager("Album", address(album));
 
-        // Song 생성
         address song1Addr = songFactory.createSong(
             1, // id
             "Superbeat", // title
@@ -58,6 +56,7 @@ contract BaseTest is Test {
             1, // gameVersion
             address(0) // nftRequired
         );
+
         address song2Addr = songFactory.createSong(
             2,
             "MegaRhythm",
@@ -70,11 +69,8 @@ contract BaseTest is Test {
             1,
             address(0)
         );
-        song1 = Song(payable(song1Addr));
-        song2 = Song(payable(song2Addr));
 
-        // Album 생성
-        album.mintAlbum(user, 1, 1);
-        album.mintAlbum(user, 2, 1);
+        song1 = Song(song1Addr);
+        song2 = Song(song2Addr);
     }
 }

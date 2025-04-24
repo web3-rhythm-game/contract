@@ -19,12 +19,12 @@ contract Beat is ERC20 {
 		    _;
 		}
 
-    function mint(address to, uint256 amount) external onlyGameCoreOwner() {
+    function mint(address to, uint256 amount) external onlyGameCoreOwner {
         _mint(to, amount);
         emit TokensMinted(to, amount);
     }
 
-    function burn(address from, uint256 amount) external onlyGameCoreOwner() {
+    function burn(address from, uint256 amount) external onlyGameCoreOwner {
         _burn(from, amount);
         emit TokensBurned(from, amount);
     }

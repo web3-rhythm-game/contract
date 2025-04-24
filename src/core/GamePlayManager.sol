@@ -32,7 +32,7 @@ contract GamePlayManager {
 		    _;
 		}
 
-    function recordGamePlay(address user, uint64 songId, uint256 score, uint256 miss, uint256 bad, uint256 good, uint256 perfect) external onlyGameCoreOwner() returns (uint64) {
+    function recordGamePlay(address user, uint64 songId, uint256 score, uint256 miss, uint256 bad, uint256 good, uint256 perfect) external onlyGameCoreOwner returns (uint64) {
         uint64 gameId = nextId++;
         gamePlays[gameId] = GamePlay({
             id: gameId,
