@@ -6,7 +6,12 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 contract Song is Initializable, UUPSUpgradeable, OwnableUpgradeable {
-    enum Tier { Free, Rare, SuperRare, Seasonal }
+    enum Tier {
+        Free,
+        Rare,
+        SuperRare,
+        Seasonal
+    }
 
     uint64 public id;
     string public title;
@@ -20,32 +25,34 @@ contract Song is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     uint16 public gameVersion;
     address public nftRequired;
 
-    function initialize(
-        uint64 _id,
-        string calldata _title,
-        string calldata _artist,
-        Tier _tier,
-        uint16 _duration,
-        uint16 _bpm,
-        uint128 _entranceFee,
-        uint40 _createdAt,
-        uint16 _gameVersion,
-        address _nftRequired
-    ) external initializer {
+    struct SongParams {
+        uint64 id;
+        string title;
+        string artist;
+        Tier tier;
+        uint16 duration;
+        uint16 bpm;
+        uint128 entranceFee;
+        uint40 createdAt;
+        uint16 gameVersion;
+        address nftRequired;
+    }
+
+    function initialize(SongParams calldata params) external initializer {
         __Ownable_init(msg.sender);
         __UUPSUpgradeable_init();
 
-        id = _id;
-        title = _title;
-        artist = _artist;
-        tier = _tier;
-        duration = _duration;
-        bpm = _bpm;
-        entranceFee = _entranceFee;
-        createdAt = _createdAt;
-        updatedAt = _createdAt;
-        gameVersion = _gameVersion;
-        nftRequired = _nftRequired;
+        id = params.id;
+        title = params.title;
+        artist = params.artist;
+        tier = params.tier;
+        duration = params.duration;
+        bpm = params.bpm;
+        entranceFee = params.entranceFee;
+        createdAt = params.createdAt;
+        updatedAt = params.createdAt;
+        gameVersion = params.gameVersion;
+        nftRequired = params.nftRequired;
     }
 
     function setTitle(string calldata _title) external onlyOwner {
@@ -88,5 +95,7 @@ contract Song is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         updatedAt = uint40(block.timestamp);
     }
 
-    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyOwner {}
 }

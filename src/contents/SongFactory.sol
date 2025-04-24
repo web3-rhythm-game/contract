@@ -12,12 +12,12 @@ contract SongFactory {
 
     event SongCreated(address indexed song, uint64 indexed id);
 
-    constructor(address _impl, address _gameCore) {
+    constructor(address _gameCore, address _impl) {
         implementation = _impl;
         gameCore = _gameCore;
     }
     
-    modifier onlyGameCoreOwner(address gameCore) {
+    modifier onlyGameCoreOwner() {
 		    require(IGameCore(gameCore).owner() == msg.sender, "Unauthorized: not GameCore owner");
 		    _;
 		}
@@ -33,7 +33,7 @@ contract SongFactory {
         uint40 createdAt,
         uint16 gameVersion,
         address nftRequired
-    ) external onlyGameCoreOwner(msg.sender) returns (address) {
+    ) external onlyGameCoreOwner() returns (address) {
         bytes memory initData = abi.encodeWithSelector(
             Song.initialize.selector,
             id, title, artist, tier, duration, bpm,

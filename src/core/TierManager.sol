@@ -19,12 +19,12 @@ contract TierManager {
         gameCore = _gameCore;
     }
     
-    modifier onlyGameCoreOwner(address gameCore) {
+    modifier onlyGameCoreOwner() {
 		    require(IGameCore(gameCore).owner() == msg.sender, "Unauthorized: not GameCore owner");
 		    _;
 		}
 
-    function setTokenRequired(Tier tier, uint128 amount) external onlyGameCoreOwner(msg.sender) {
+    function setTokenRequired(Tier tier, uint128 amount) external onlyGameCoreOwner() {
         tierInfo[tier].tokenRequired = amount;
         emit TokenRequiredSet(tier, amount);
     }

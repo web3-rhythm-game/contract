@@ -22,16 +22,16 @@ contract UserManager {
         gameCore = _gameCore;
     }
 
-    modifier onlyGameCoreOwner(address gameCore) {
+    modifier onlyGameCoreOwner() {
 		    require(IGameCore(gameCore).owner() == msg.sender, "Unauthorized: not GameCore owner");
 		    _;
 		}
 
 
-    function registerUser() external onlyGameCoreOwner(msg.sender) {
+    function registerUser(string calldata name) external onlyGameCoreOwner() {
         require(users[msg.sender].wallet == address(0), "UserAlreadyRegistered");
         users[msg.sender] = User({
-            name: "Unknown",
+            name: name,
             bio: "",
             wallet: msg.sender,
             email: "",
@@ -41,7 +41,7 @@ contract UserManager {
         emit UserRegistered(msg.sender, "Unknown", "", "");
     }
 
-    function updateUser(string calldata name, string calldata bio, string calldata email, string calldata avatar) external onlyGameCoreOwner(msg.sender) {
+    function updateUser(string calldata name, string calldata bio, string calldata email, string calldata avatar) external onlyGameCoreOwner() {
         require(users[msg.sender].wallet != address(0), "UserNotFound");
         users[msg.sender].name = name;
         users[msg.sender].bio = bio;

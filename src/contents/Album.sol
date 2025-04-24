@@ -3,8 +3,11 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "../interfaces/IGameCore.sol"; 
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract Album is ERC1155 {
+    using Strings for uint256;
+
     struct AlbumData {
         uint64 songId;
         string icon;
@@ -21,27 +24,27 @@ contract Album is ERC1155 {
         gameCore = _gameCore;
     }
     
-    modifier onlyGameCoreOwner(address gameCore) {
+    modifier onlyGameCoreOwner() {
 		    require(IGameCore(gameCore).owner() == msg.sender, "Unauthorized: not GameCore owner");
 		    _;
 		}
 
-    function mintAlbum(address to, uint64 songId, uint256 amount) external onlyGameCoreOwner(msg.sender) {
+    function mintAlbum(address to, uint64 songId, uint256 amount) external onlyGameCoreOwner() {
         uint256 albumId = uint256(songId);
         albums[albumId].mintedCount += uint32(amount);
         _mint(to, albumId, amount, "");
         emit AlbumMinted(to, songId, amount);
     }
 
-    function setMetadata(uint64 songId, string calldata icon, string calldata title, string calldata description) external onlyGameCoreOwner(msg.sender){
+    function setMetadata(uint64 songId, string calldata icon, string calldata title, string calldata description) external onlyGameCoreOwner(){
         uint256 albumId = uint256(songId);
         albums[albumId].icon = icon;
         albums[albumId].title = title;
         albums[albumId].description = description;
     }
 
-    function uri(uint256 id) public view override returns (string memory) {
-        return string(abi.encodePacked("https://api.example.com/metadata/", uint2str(id), ".json"));
+    function uri(uint256 id) public pure override returns (string memory) {
+        return string(abi.encodePacked("https://api.example.com/metadata/", id.toString(), ".json"));
     }
 
     function totalMinted(uint64 songId) external view returns (uint32) {

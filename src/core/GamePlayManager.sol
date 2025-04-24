@@ -27,12 +27,12 @@ contract GamePlayManager {
         gameCore = _gameCore;
     }
 
-    modifier onlyGameCoreOwner(address gameCore) {
+    modifier onlyGameCoreOwner() {
 		    require(IGameCore(gameCore).owner() == msg.sender, "Unauthorized: not GameCore owner");
 		    _;
 		}
 
-    function recordGamePlay(address user, uint64 songId, uint256 score, uint256 miss, uint256 bad, uint256 good, uint256 perfect) external onlyGameCoreOwner(msg.sender) {
+    function recordGamePlay(address user, uint64 songId, uint256 score, uint256 miss, uint256 bad, uint256 good, uint256 perfect) external onlyGameCoreOwner() returns (uint64) {
         uint64 gameId = nextId++;
         gamePlays[gameId] = GamePlay({
             id: gameId,
@@ -47,6 +47,7 @@ contract GamePlayManager {
             songId: songId
         });
         emit GamePlayRecorded(user, gameId, songId, score, miss, bad, good, perfect);
+        return gameId;
     }
 
     function getGamePlay(uint64 id) external view returns (GamePlay memory) {

@@ -10,21 +10,21 @@ contract Beat is ERC20 {
 		event TokensMinted(address indexed to, uint256 amount);
     event TokensBurned(address indexed from, uint256 amount);
 
-    constructor(address _gameCore) ERC20("Beat", "BT") {
+    constructor(address _gameCore) ERC20("Beat", "BEAT") {
         gameCore = _gameCore;
     }
     
-    modifier onlyGameCoreOwner(address gameCore) {
+    modifier onlyGameCoreOwner() {
 		    require(IGameCore(gameCore).owner() == msg.sender, "Unauthorized: not GameCore owner");
 		    _;
 		}
 
-    function mint(address to, uint256 amount) external onlyGameCoreOwner(msg.sender) {
+    function mint(address to, uint256 amount) external onlyGameCoreOwner() {
         _mint(to, amount);
         emit TokensMinted(to, amount);
     }
 
-    function burn(address from, uint256 amount) external onlyGameCoreOwner(msg.sender) {
+    function burn(address from, uint256 amount) external onlyGameCoreOwner() {
         _burn(from, amount);
         emit TokensBurned(from, amount);
     }

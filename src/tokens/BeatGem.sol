@@ -10,21 +10,21 @@ contract BeatGem is ERC20 {
 		event TokensMinted(address indexed to, uint256 amount);
     event TokensBurned(address indexed from, uint256 amount);
     
-    modifier onlyGameCoreOwner(address gameCore) {
+    modifier onlyGameCoreOwner() {
 		    require(IGameCore(gameCore).owner() == msg.sender, "Unauthorized: not GameCore owner");
 		    _;
 		}
 		
-    constructor(address _gameCore) ERC20("BeatGem", "BG") {
+    constructor(address _gameCore) ERC20("BeatGem", "GEM") {
         gameCore = _gameCore;
     }
 
-    function mint(address to, uint256 amount) external onlyGameCoreOwner(msg.sender) {
+    function mint(address to, uint256 amount) external onlyGameCoreOwner() {
         _mint(to, amount);
         emit TokensMinted(to, amount);
     }
 
-    function burn(address from, uint256 amount) external onlyGameCoreOwner(msg.sender) {
+    function burn(address from, uint256 amount) external onlyGameCoreOwner() {
         _burn(from, amount);
         emit TokensBurned(from, amount);
     }
