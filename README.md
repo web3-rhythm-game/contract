@@ -1,6 +1,5 @@
 # Rhythm
 web3 리듬게임
-- [문서](./docs)
 
 # 빌드
 1. 서브모듈과 함께 저장소 클론 (만약 서브모듈 없이 했다면 `make init`)
@@ -883,3 +882,4 @@ npm run dev
 
 # 할 것
 [ ] errors 추가 후 에러 처리
+[ ] mp4 url, img url 추가하기
