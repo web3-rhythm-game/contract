@@ -28,10 +28,29 @@ make deploy
 ```
 etherscan verify없이 하려면 Makefile에서 deploy에서 --verify 제거해주세요.
 
+# 데모 웹
+컨트랙트 동작 테스트용도 (viem과 wagmi 사용해서 네트워크와 연결). 실제 동작하려면 소스코드 각 컨트랙트 주소 바꿔야 함.
+```sh
+cd demo
+npm install
+npm run dev
+```
+
+<img src="image.png" width="49%"><img src="image-1.png" width="49%">
+<img src="image-2.png" width="49%"><img src="image-3.png" width="49%">
 
 # Deploy 결과 예시
+- [Etherscan: GameCore](https://sepolia.etherscan.io/address/0xb7cb3d07ba4fb840b764e5b256c856c3e5c2ab74)
+- [Etherscan: UserManager](https://sepolia.etherscan.io/address/0x9c1ad93d0646d6403aa34be6f725aeeb1c78d952#code)
+
+등등
+
+# IPFS ([pinata](https://app.pinata.cloud/) 사용중)
+- bafybeicgp2yemm3h4zd6ksgmhpocq53bmd2dev4jn2e23ff6n7cjb2t3w4 goodday.mp3
+- bafybeibbqzxjhwlvogq7g5r6fyj4caa6scll3u7n7dl6cqqs4itp66j6h4 umbrella.mp3
+
 <details>
-<summary>펼치기</summary>
+<summary>자세히 (눌러서 펼치기)</summary>
 
 ```json
 {
