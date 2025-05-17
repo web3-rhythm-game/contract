@@ -881,5 +881,5 @@ npm run dev
 
 
 # 할 것
-[ ] errors 추가 후 에러 처리
-[ ] mp4 url, img url 추가하기
+- [ ] errors 추가 후 에러 처리
+- [x] mp4 url, img url 추가하기
